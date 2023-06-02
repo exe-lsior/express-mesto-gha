@@ -19,7 +19,7 @@ module.exports.getUserId = (req, res) => {
     });
 };
 
-module.exports.createUser = (req, res) =>{
+module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))

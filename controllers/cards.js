@@ -7,7 +7,6 @@ module.exports.getCards = (req, res) => {
     .catch(() => res.status(serverError).send({ message: 'На сервере произошла ошибка' }));
 };
 
-
 module.exports.createCard = (req, res) => {
   const owner = req.user._id;
   const { name, link } = req.body;
@@ -46,7 +45,7 @@ module.exports.likeCard = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
-  )
+  );
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .orFail(() => { res.status(notFoundError).send({ message: 'По переданному id отсутствуют данные' }); })
     .then((card) => res.send({ data: card }))
