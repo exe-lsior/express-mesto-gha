@@ -12,9 +12,9 @@ module.exports.getUserId = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(notFoundError).send({ message: 'Пользователь по указанному _id не найден' });
+        res.status(incorrectDataError).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(serverError).send({ message: 'На сервере произошла ошибка' });
+        res.status(notFoundError).send({ message: 'Пользователь по указанному _id не найден' });
       }
     });
 };

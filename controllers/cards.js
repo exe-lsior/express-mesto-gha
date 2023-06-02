@@ -47,7 +47,7 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   );
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
-    .orFail(() => { res.status(notFoundError).send({ message: 'По переданному id отсутствуют данные' }); })
+    .orFail(() => { res.status(incorrectDataError).send({ message: 'По переданному id отсутствуют данные' }); })
     .then((card) => res.send({ data: card }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
@@ -57,7 +57,7 @@ module.exports.dislikeCard = (req, res) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(incorrectDataError).send({ message: 'Переданы некорректные данные' });
+        res.status(notFoundError).send({ message: 'Переданы некорректные данные' });
       } else {
         res.status(serverError).send({ message: 'На сервере произошла ошибка' });
       }
