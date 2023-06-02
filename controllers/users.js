@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const { incorrectDataError, serverError } = require('../utils/statuses');
+const { incorrectDataError, notFoundError, serverError } = require('../utils/statuses');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -12,7 +12,7 @@ module.exports.getUserId = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(incorrectDataError).send({ message: 'Переданы некорректные данные' });
+        res.status(notFoundError).send({ message: 'Пользователь по указанному _id не найден' });
       } else {
         res.status(serverError).send({ message: 'На сервере произошла ошибка' });
       }
@@ -34,7 +34,7 @@ module.exports.createUser = (req, res) => {
 
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -47,7 +47,7 @@ module.exports.updateUser = (req, res) => {
 
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
