@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getCards, createCard, deleteCard, likeCard, dislikeCard,
 } = require('../controllers/cards');
-const { validateUrl } = require('../utils/validate');
+const { validateLink } = require('../utils/validate');
 
 router.get('/cards', getCards);
 router.post(
@@ -11,7 +11,7 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
-      link: Joi.string().required().min(2).custom(validateUrl),
+      link: Joi.string().required().min(2).custom(validateLink),
     }),
   }),
   createCard,
