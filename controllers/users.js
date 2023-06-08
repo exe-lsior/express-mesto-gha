@@ -16,6 +16,13 @@ module.exports.getUsers = (req, res, next) => {
     });
 };
 
+module.exports.getProfile = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => { throw new NotFoundError('По переданному id отсутствуют данные'); })
+    .then((user) => res.send({ data: user }))
+    .catch(next);
+};
+
 module.exports.getUserId = (req, res) => {
   User.findById(req.params.userId)
     .orFail(() => { throw new NotFoundError('По переданному id отсутствуют данные'); })

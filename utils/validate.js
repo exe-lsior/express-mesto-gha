@@ -1,5 +1,5 @@
 const validateLink = (url) => {
-  const regex = /https?:\/\/(www)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]*/i;
+  const regex = /https?:\/\/(www)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]*i/;
   if (regex.test(url)) {
     return url;
   }

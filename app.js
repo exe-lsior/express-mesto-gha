@@ -44,12 +44,24 @@ app.post(
 
 app.use(auth);
 
-app.use(errors());
-
 app.use(cookieParser());
 
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
+
+app.use(errors());
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+
+  const message = statusCode === 500
+    ? 'На сервере произошла ошибка'
+    : err.message;
+
+  res.status(statusCode).send({ message });
+
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
